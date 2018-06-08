@@ -8,6 +8,7 @@ var express = require("express");
 var helmet = require("helmet");
 var mongoose = require("mongoose");
 var logger = require("morgan");
+var AuthenticationRouter_1 = require("./router/AuthenticationRouter");
 var PostRouter_1 = require("./router/PostRouter");
 var UserRouter_1 = require("./router/UserRouter");
 var Server = /** @class */ (function () {
@@ -36,16 +37,15 @@ var Server = /** @class */ (function () {
             res.header('Access-Control-Allow-Credentials', 'true');
             next();
         });
+        this.app.use(AuthenticationRouter_1.AuthenticationRouter);
     };
     // application routes
     Server.prototype.routes = function () {
         var router = express.Router();
-        this.app.use('/', router);
         this.app.use('/api/v1/posts', PostRouter_1.default);
         this.app.use('/api/v1/users', UserRouter_1.default);
     };
     return Server;
 }());
-// export
 exports.default = new Server().app;
 //# sourceMappingURL=server.js.map

@@ -7,6 +7,7 @@ import * as helmet from 'helmet';
 import * as mongoose from 'mongoose';
 import * as logger from 'morgan';
 import * as path from 'path';
+import { AuthenticationRouter } from './router/AuthenticationRouter';
 import PostRouter from './router/PostRouter';
 import UserRouter from './router/UserRouter';
 
@@ -45,18 +46,17 @@ class Server {
       res.header('Access-Control-Allow-Credentials', 'true');
       next();
     });
-    
+
+    this.app.use(AuthenticationRouter);
   }
 
   // application routes
   public routes(): void {
     const router: express.Router = express.Router();
 
-    this.app.use('/', router);
     this.app.use('/api/v1/posts', PostRouter);
     this.app.use('/api/v1/users', UserRouter);
   }
 }
 
-// export
 export default new Server().app;
